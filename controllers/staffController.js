@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 export const createStaff = async (req, res) => {
   try {
-    const { name, email, password, department, faculty } = req.body;
+    const { name, email, password, department, faculty, jobInfo } = req.body;
     const existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
@@ -19,6 +19,7 @@ export const createStaff = async (req, res) => {
       userType: "staff",
       department,
       faculty,
+      jobInfo: jobInfo || [],
     });
     await staff.save();
 
@@ -29,7 +30,13 @@ export const createStaff = async (req, res) => {
       await dept.save();
     }
 
-    res.json({ success: true, staff });
+    // Populate department and faculty
+    const populatedStaff = await userModel
+      .findById(staff._id)
+      .populate("department")
+      .populate("faculty");
+
+    res.json({ success: true, staff: populatedStaff });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -69,13 +76,18 @@ export const getStaffProfile = async (req, res) => {
     if (!id) {
       return res.json({ success: false, message: "Invalid staff ID" });
     }
+
+    // Ensure profilePicture is included in the response
     const staff = await userModel
       .findById(id)
       .populate("department")
-      .populate("faculty"); // Populate faculty field
+      .populate("faculty")
+      .select("name email department faculty jobInfo profilePicture");
+
     if (!staff) {
       return res.json({ success: false, message: "Staff not found" });
     }
+
     res.json({ success: true, staff });
   } catch (error) {
     res.json({ success: false, message: error.message });

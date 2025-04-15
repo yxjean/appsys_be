@@ -119,7 +119,7 @@ export const logout = (req, res) => {
 
 // Remove sendVerifyOtp and verifyEmail functions
 
-// Check if the user is authenticated
+// Check if the use is authenticated
 export const isAuthenticated = async (req, res) => {
   try {
     return res.json({ success: true });
@@ -153,8 +153,8 @@ export const sendResetOtp = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: "Password Reset OTP",
-      text: `Your OTP for resetting your password is ${otp}.
-            Use this OTP to proceed with resetting your password.`,
+      text: `Your OTP for ressetting your password is ${otp}.
+            Use this ITP to proceed with ressetting your password.`,
       html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace(
         "{{email}}",
         user.email

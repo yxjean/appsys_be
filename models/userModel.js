@@ -71,6 +71,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  profilePicture: {
+    type: String,
+    default: "",
+  },
 });
 
 const userModel = mongoose.models.User || mongoose.model("User", userSchema);

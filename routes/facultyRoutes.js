@@ -4,6 +4,8 @@ import {
   removeFaculty,
   getFaculties,
   addDepartmentToFaculty,
+  updateFaculty,
+  updateDepartment,
 } from "../controllers/facultyController.js";
 import userAuth from "../middleware/userAuth.js";
 
@@ -16,6 +18,12 @@ facultyRouter.post(
   "/:facultyId/departments/add",
   userAuth,
   addDepartmentToFaculty
+);
+facultyRouter.put("/:id", userAuth, updateFaculty);
+facultyRouter.put(
+  "/:facultyId/departments/:departmentId",
+  userAuth,
+  updateDepartment
 );
 
 export default facultyRouter;

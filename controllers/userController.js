@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 export const getUserData = async (req, res) => {
   try {
-    const userId = req.user._id; // Get userId from req.user
+    const userId = req.user._id;
     const user = await userModel.findById(userId);
 
     if (!user) {
@@ -45,8 +45,9 @@ export const getUserProfile = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming user ID is stored in req.user
+    const userId = req.user.id;
     const {
+      name,
       faculty,
       designation,
       contactNumber,
@@ -57,6 +58,26 @@ export const updateUserProfile = async (req, res) => {
     const user = await userModel.findById(userId);
     if (!user) {
       return res.json({ success: false, message: "User not found" });
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    // Handle profile picture upload
+    if (req.file) {
+      if (user.profilePicture) {
+        const oldImagePath = path.join(
+          process.cwd(),
+          "uploads",
+          "profile",
+          user.profilePicture
+        );
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+      user.profilePicture = req.file.filename;
     }
 
     user.jobInfo = [
@@ -78,7 +99,7 @@ export const updateUserProfile = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming user ID is stored in req.user
+    const userId = req.user.id;
     const { currentPassword, newPassword } = req.body;
 
     const user = await userModel.findById(userId);

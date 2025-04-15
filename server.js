@@ -9,12 +9,12 @@ import fs from "fs";
 import connectDB from "./config/mongodb.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
-import departmentRouter from "./routes/departmentRoutes.js"; // Import department routes
-import staffRouter from "./routes/staffRoutes.js"; // Import staff routes
+import departmentRouter from "./routes/departmentRoutes.js";
+import staffRouter from "./routes/staffRoutes.js";
 import performanceCategoryRoutes from "./routes/performanceCategoryRoutes.js";
-import performanceEntryRoutes from "./routes/performanceEntryRoutes.js"; // Import performance entry routes
-import performanceReportRoutes from "./routes/performanceReportRoutes.js"; // Import performance report routes
-import facultyRouter from "./routes/facultyRoutes.js"; // Import faculty routes
+import performanceEntryRoutes from "./routes/performanceEntryRoutes.js";
+import performanceReportRoutes from "./routes/performanceReportRoutes.js";
+import facultyRouter from "./routes/facultyRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,17 +36,21 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-app.use("/uploads", express.static(uploadsDir));
+// Set up static file serving
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Serve static files from uploads directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // API Endpoints
 app.get("/", (req, res) => res.send("API Working"));
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-app.use("/api/departments", departmentRouter); // Use department routes
-app.use("/api/staff", staffRouter); // Use staff routes
+app.use("/api/departments", departmentRouter);
+app.use("/api/staff", staffRouter);
 app.use("/api", performanceCategoryRoutes);
-app.use("/api", performanceEntryRoutes); // Use performance entry routes
-app.use("/api/performance-report", performanceReportRoutes); // Use performance report routes
-app.use("/api/faculties", facultyRouter); // Register the faculty routes
+app.use("/api", performanceEntryRoutes);
+app.use("/api/performance-report", performanceReportRoutes);
+app.use("/api/faculties", facultyRouter);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -50,7 +50,21 @@ export const createPerformanceEntry = async (req, res) => {
 export const getPerformanceEntries = async (req, res) => {
   try {
     const entries = await performanceEntryModel.find({ user: req.user._id });
-    res.json({ success: true, entries });
+
+    // Add base URL to entries with documents
+    const entriesWithDocumentUrls = entries.map((entry) => {
+      // Convert Mongoose document to plain object
+      const entryObject = entry.toObject();
+
+      // Add document URL if document exists
+      if (entryObject.document) {
+        entryObject.documentUrl = `http://localhost:4000/uploads/${entryObject.document}`;
+      }
+
+      return entryObject;
+    });
+
+    res.json({ success: true, entries: entriesWithDocumentUrls });
   } catch (error) {
     console.error(error); // Log the error for debugging
     res.status(500).json({ success: false, message: error.message });
@@ -78,6 +92,26 @@ export const deletePerformanceEntry = async (req, res) => {
     res.json({ success: true, message: "Entry deleted" });
   } catch (error) {
     console.error(error); // Log the error for debugging
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getPerformanceEntriesSummary = async (req, res) => {
+  try {
+    const { staffId } = req.params;
+
+    if (!staffId) {
+      return res.status(400).json({
+        success: false,
+        message: "Staff ID is required",
+      });
+    }
+
+    const entries = await performanceEntryModel.find({ user: staffId });
+
+    res.json({ success: true, entries });
+  } catch (error) {
+    console.error("Error fetching performance entries summary:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

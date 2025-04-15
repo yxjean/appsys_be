@@ -58,3 +58,51 @@ export const addDepartmentToFaculty = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+export const updateFaculty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const updatedFaculty = await facultyModel
+      .findByIdAndUpdate(id, { name }, { new: true })
+      .populate({
+        path: "departments",
+        populate: { path: "staff" },
+      });
+
+    if (!updatedFaculty) {
+      return res.json({ success: false, message: "Faculty not found" });
+    }
+
+    res.json({ success: true, faculty: updatedFaculty });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const updateDepartment = async (req, res) => {
+  try {
+    const { facultyId, departmentId } = req.params;
+    const { name } = req.body;
+
+    const updatedDepartment = await departmentModel.findByIdAndUpdate(
+      departmentId,
+      { name },
+      { new: true }
+    );
+
+    if (!updatedDepartment) {
+      return res.json({ success: false, message: "Department not found" });
+    }
+
+    const faculty = await facultyModel.findById(facultyId).populate({
+      path: "departments",
+      populate: { path: "staff" },
+    });
+
+    res.json({ success: true, faculty });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
