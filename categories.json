@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Publication",
+    "quantity": 10
+  },
+  {
+    "name": "Postgraduate Supervision",
+    "quantity": 10
+  },
+  {
+    "name": "Teaching & Undergraduate Supervision",
+    "quantity": 10
+  },
+  {
+    "name": "VASI",
+    "quantity": 10
+  },
+  {
+    "name": "Administrative Service",
+    "quantity": 10
+  },
+  {
+    "name": "Consultancy",
+    "quantity": 10
+  },
+  {
+    "name": "Research",
+    "quantity": 10
+  }
+]
