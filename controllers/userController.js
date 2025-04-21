@@ -1,6 +1,8 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import path from "path";
+import fs from "fs";
 
 export const getUserData = async (req, res) => {
   try {

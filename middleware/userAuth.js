@@ -11,7 +11,7 @@ const userAuth = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await userModel.findById(decoded.id).select("-password");
+    req.user = await userModel.findById(decoded.id).select("-password"); // Excludes the password field
     if (!req.user) {
       return res
         .status(401)
