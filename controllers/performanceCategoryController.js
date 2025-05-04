@@ -21,7 +21,7 @@ export const updatePerformanceCategory = async (req, res) => {
     const category = await performanceCategoryModel.findByIdAndUpdate(
       id,
       { quantity },
-      { new: true }
+      { new: true } // Option to return the updated category
     );
     res.json({ success: true, category });
   } catch (error) {
