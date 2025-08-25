@@ -15,6 +15,9 @@ import performanceCategoryRoutes from "./routes/performanceCategoryRoutes.js";
 import performanceEntryRoutes from "./routes/performanceEntryRoutes.js";
 import performanceReportRoutes from "./routes/performanceReportRoutes.js";
 import facultyRouter from "./routes/facultyRoutes.js";
+import bookingRouter from "./routes/bookingRouter.js";
+import eventRouter from "./routes/eventRoutes.js";
+import notificationsRouter from "./routes/notificationsRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -52,5 +55,8 @@ app.use("/api", performanceCategoryRoutes);
 app.use("/api", performanceEntryRoutes);
 app.use("/api/performance-report", performanceReportRoutes);
 app.use("/api/faculties", facultyRouter);
+app.use("/api/booking", bookingRouter);
+app.use("/api/event", eventRouter);
+app.use("/api/notifications", notificationsRouter);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

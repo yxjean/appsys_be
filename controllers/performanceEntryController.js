@@ -1,5 +1,6 @@
 import performanceEntryModel from "../models/performanceEntryModel.js";
 import performanceCategoryModel from "../models/performanceCategoryModel.js";
+import userModel from "../models/userModel.js";
 import path from "path";
 import fs from "fs";
 import { PDFDocument } from "pdf-lib";
@@ -113,6 +114,82 @@ export const getPerformanceEntriesSummary = async (req, res) => {
   } catch (error) {
     console.error("Error fetching performance entries summary:", error);
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+export const getAllUserPerformanceEntries = async (req, res) => {
+  try {
+    const allUserPerformanceEntries = await performanceEntryModel.find().lean();
+
+    const performanceCategories = await performanceCategoryModel.find().lean();
+
+    let allUsers;
+
+
+    if(req.user.userType === "admin"){
+      allUsers = await userModel.find({
+        userType: { $ne: "admin" },
+        privileges: { $ne: "view" }
+      }).lean();
+    }
+    else if(req.user.privileges === "view"){
+      allUsers = req.user.viewableStaff
+    }
+
+    
+    allUsers = allUsers.map((val)=>{
+      let userDesignation = val.jobInfo[0].designation.toLowerCase();
+      val["performanceEntries"] = {
+        publication: [],
+        research: [],
+        teaching_and_undergraduate_supervision: [],
+        postgraduate_supervision: [],
+        vasi: [],
+        admin_service: [],
+        consultancy: []
+      }
+
+      if(userDesignation === "lecturer"){
+        userDesignation = 'lecture'
+      }
+
+
+      val["performance_area_score_distribution"] = performanceCategories.filter(val=>val.designation === userDesignation)[0].performance_area_score_distribution
+
+      allUserPerformanceEntries.forEach((value,ind)=>{
+        if(val._id.toString() === value.user.toString()){
+          if(value.area === 'Administrative Service'){
+            val.performanceEntries.admin_service.push(value);
+          }
+          else if(value.area === "Teaching & Undergraduate Supervision"){
+            val.performanceEntries.teaching_and_undergraduate_supervision.push(value);
+          }
+          else if(value.area === "Postgraduate Supervision"){
+            val.performanceEntries.postgraduate_supervision.push(value);
+          }
+          else if(value.area === "VASI"){
+            val.performanceEntries.vasi.push(value);
+          }
+          else if(value.area === "Consultancy"){
+            val.performanceEntries.consultancy.push(value);
+          }
+          else if(value.area === "publication"){
+            val.performanceEntries.publication.push(value);
+          }
+          else if(value.area === "Research"){
+            val.performanceEntries.research.push(value);
+          }
+        }
+      })
+
+      return val;
+    })
+
+
+    res.json({ success: true, allUserPerformanceEntries: allUsers });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
   }
 };
 

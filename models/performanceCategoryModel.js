@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
 
 const performanceCategorySchema = new mongoose.Schema({
-  name: {
+  designation: {
     type: String,
-    required: true,
+    required: true
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
+  performance_area_score_distribution: [
+    {
+      name: { type: String, required: true  },
+      quantity: { type: Number, required: true }
+    }
+  ]
 });
 
 performanceCategorySchema.statics.deleteCategory = async function (id) {

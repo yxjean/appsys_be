@@ -6,6 +6,7 @@ import {
   getPerformanceEntries,
   deletePerformanceEntry,
   getPerformanceEntriesSummary,
+  getAllUserPerformanceEntries
 } from "../controllers/performanceEntryController.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 
@@ -29,6 +30,8 @@ router.post(
   createPerformanceEntry
 );
 router.get("/performance-entries", isAuthenticated, getPerformanceEntries);
+router.get("/performance-entries/all", isAuthenticated, getAllUserPerformanceEntries);
+
 router.delete(
   "/performance-entries/:id",
   isAuthenticated,
@@ -39,5 +42,6 @@ router.get(
   isAuthenticated,
   getPerformanceEntriesSummary
 );
+
 
 export default router;

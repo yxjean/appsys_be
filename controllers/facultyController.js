@@ -3,9 +3,31 @@ import departmentModel from "../models/departmentModel.js";
 
 export const addFaculty = async (req, res) => {
   try {
-    const { name } = req.body;
-    const faculty = new facultyModel({ name, departments: [] }); // Initialize departments as an empty array
+    const { name, departments } = req.body;
+    let faculty = new facultyModel({ name, departments: [] }); // Initialize departments as an empty array
     await faculty.save();
+
+    
+    if(departments && Array.isArray(departments) && departments.length) {
+      const newDepartments = await departmentModel.insertMany(req.body.departments.map((val)=>{
+        return {
+          faculty: faculty.id,
+          name: val,
+        }
+      }));
+
+
+      faculty = await facultyModel.findByIdAndUpdate(
+        faculty.id,
+        {
+          departments: newDepartments.map((val)=>{
+          return  val.id
+        })},
+        { new: true }
+      ).populate("departments")
+    }
+
+
     res.json({ success: true, faculty });
   } catch (error) {
     res.json({ success: false, message: error.message });
