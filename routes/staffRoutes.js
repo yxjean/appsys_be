@@ -9,6 +9,7 @@ import {
   getPrivilegedStaff,
   assignPrivilegesToMultipleStaff,
   saveViewableStaff,
+  getAdminAllStaff
 } from "../controllers/staffController.js";
 import userAuth from "../middleware/userAuth.js";
 
@@ -21,6 +22,7 @@ staffRouter.get("/profile/:id", userAuth, getStaffProfile);
 staffRouter.put("/update/:id", userAuth, updateStaffRecords);
 staffRouter.put("/privileges/:id", userAuth, assignPrivileges);
 staffRouter.get("/privileged", userAuth, getPrivilegedStaff);
+staffRouter.get("/getAdminAllStaff",userAuth,getAdminAllStaff)
 staffRouter.put(
   "/assign-privileges",
   userAuth,

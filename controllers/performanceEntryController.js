@@ -72,6 +72,31 @@ export const getPerformanceEntries = async (req, res) => {
   }
 };
 
+
+export const getPerformanceEntriesByUserId = async (req, res)=>{
+  try {
+    const entries = await performanceEntryModel.find({ user: req.params.id });
+
+    // Add base URL to entries with documents
+    const entriesWithDocumentUrls = entries.map((entry) => {
+      // Convert Mongoose document to plain object
+      const entryObject = entry.toObject();
+
+      // Add document URL if document exists
+      if (entryObject.document) {
+        entryObject.documentUrl = `http://localhost:4000/uploads/${entryObject.document}`;
+      }
+
+      return entryObject;
+    });
+
+    res.json({ success: true, entries: entriesWithDocumentUrls });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 export const deletePerformanceEntry = async (req, res) => {
   try {
     const { id } = req.params;
@@ -130,7 +155,7 @@ export const getAllUserPerformanceEntries = async (req, res) => {
     if(req.user.userType === "admin"){
       allUsers = await userModel.find({
         userType: { $ne: "admin" },
-        privileges: { $ne: "view" }
+        /*privileges: { $ne: "view" }*/
       }).lean();
     }
     else if(req.user.privileges === "view"){
@@ -174,7 +199,7 @@ export const getAllUserPerformanceEntries = async (req, res) => {
           else if(value.area === "Consultancy"){
             val.performanceEntries.consultancy.push(value);
           }
-          else if(value.area === "publication"){
+          else if(value.area === "Publication"){
             val.performanceEntries.publication.push(value);
           }
           else if(value.area === "Research"){

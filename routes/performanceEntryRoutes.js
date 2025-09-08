@@ -6,7 +6,8 @@ import {
   getPerformanceEntries,
   deletePerformanceEntry,
   getPerformanceEntriesSummary,
-  getAllUserPerformanceEntries
+  getAllUserPerformanceEntries,
+  getPerformanceEntriesByUserId
 } from "../controllers/performanceEntryController.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 
@@ -31,6 +32,7 @@ router.post(
 );
 router.get("/performance-entries", isAuthenticated, getPerformanceEntries);
 router.get("/performance-entries/all", isAuthenticated, getAllUserPerformanceEntries);
+router.get("/performance-entries/user/:id", isAuthenticated, getPerformanceEntriesByUserId);
 
 router.delete(
   "/performance-entries/:id",

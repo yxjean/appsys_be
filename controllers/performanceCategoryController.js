@@ -6,6 +6,8 @@ export const getPerformanceCategoriesByUserId = async (req,res)=>{
     const { id } = req.params;
 
     const user = await userModel.findById(id);
+    
+    console.log(user);
 
     let designation = user.jobInfo[0].designation.toLowerCase();
 

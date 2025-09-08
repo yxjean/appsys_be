@@ -18,6 +18,7 @@ import facultyRouter from "./routes/facultyRoutes.js";
 import bookingRouter from "./routes/bookingRouter.js";
 import eventRouter from "./routes/eventRoutes.js";
 import notificationsRouter from "./routes/notificationsRoutes.js";
+import assessmentPeriodRouter from './routes/assessmentPeriodRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -58,5 +59,6 @@ app.use("/api/faculties", facultyRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/event", eventRouter);
 app.use("/api/notifications", notificationsRouter);
+app.use('/api/assessment-period',assessmentPeriodRouter);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

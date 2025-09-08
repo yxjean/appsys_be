@@ -49,7 +49,7 @@ export const getUserProfile = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const {
       name,
       faculty,
@@ -103,7 +103,7 @@ export const updateUserProfile = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { currentPassword, newPassword } = req.body;
 
     const user = await userModel.findById(userId);

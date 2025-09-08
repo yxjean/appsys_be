@@ -214,3 +214,15 @@ export const saveViewableStaff = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+export const getAdminAllStaff = async (req,res) => {
+  try {
+    const viewableStaff = await userModel.find({ userType: { $ne: "admin" } }).populate("department").populate("faculty");
+
+    res.json({ success: true, viewableStaff: viewableStaff });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+
+}
