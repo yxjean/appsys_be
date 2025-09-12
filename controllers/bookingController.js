@@ -125,6 +125,10 @@ async function updateById(req, res) {
       to: bookedByUser.email,
       subject: "Booking Status",
       text: `Hello ${bookedByUser.name}, ${bookedToUser.name} has responded to your booking.`,
+      html: BOOKING_RESPONSE_TEMPLATE.replace("{{bookedByName}}", bookedByUser.name).replace(
+              "{{bookedToName}}",
+              bookedToUser.name
+      ),
     };
 
     await transporter.sendMail(mailOptions);
@@ -150,9 +154,6 @@ async function getByStaffId(req, res) {
       return val;
     })
 
-    
-
-
     res.json({ success: true, bookings });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -167,7 +168,7 @@ async function getBySuperiorId(req, res) {
       .populate("bookedTo")
 
 
-    booking = booking.map((val)=>{
+    bookings = bookings.map((val)=>{
       if(val.status === "accepted" && moment().isAfter(moment(val.endTime))){
         val.status = "completed";
       }

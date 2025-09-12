@@ -1,9 +1,9 @@
-export const BOOKING_INVITATION_TEMPLATE = `
+export const BOOKING_RESPONSE_TEMPLATE = `
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-  <title>New Booking Invitation</title>
+  <title>Booking Response</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,26 +32,14 @@ export const BOOKING_INVITATION_TEMPLATE = `
       color: #000000;
     }
 
-    .button {
-      width: 100%;
-      background: #22D172;
-      text-decoration: none;
-      display: inline-block;
-      padding: 10px 0;
-      color: #fff;
-      font-size: 14px;
-      text-align: center;
+    .status {
       font-weight: bold;
-      border-radius: 7px;
+      color: {{statusColor}};
     }
 
     @media only screen and (max-width: 480px) {
       .container {
         width: 80% !important;
-      }
-
-      .button {
-        width: 50% !important;
       }
     }
   </style>
@@ -70,18 +58,18 @@ export const BOOKING_INVITATION_TEMPLATE = `
                     <tbody>
                       <tr>
                         <td style="padding: 0 0 24px; font-size: 18px; line-height: 150%; font-weight: bold;">
-                          New Booking Invitation
+                          Booking Response
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 0 0 10px; font-size: 14px; line-height: 150%;">
-                          Hello <span style="color: #4C83EE;">{{name}}</span>, <br/><br/>
-                          You have been invited to a new booking created.
+                          Hello <span style="color: #4C83EE;">{{bookedByName}}</span>, <br/><br/>
+                          <span style="color: #22D172;">{{bookedToName}}</span> has responded to your booking.
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding: 0 0 10px; font-size: 14px; line-height: 150%;">
-                          Please review the booking details and confirm your attendance.
+                        <td style="padding: 10px 0; font-size: 14px; line-height: 150%;">
+                          Status: <span class="status">{{status}}</span>
                         </td>
                       </tr>
                     </tbody>
