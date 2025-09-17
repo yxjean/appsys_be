@@ -1,4 +1,5 @@
 import assessmentPeriodModel from "../models/assessmentPeriodModel.js";
+import staffPerformanceResultSummaryModel from "../models/staffPerformanceResultSummaryModel.js";
 
 async function getAssessmentPeriod(req, res) {
   try {
@@ -14,6 +15,8 @@ async function createAssessmentPeriod(req, res) {
   try {
     const assessmentPeriod = new assessmentPeriodModel(req.body)
     await assessmentPeriod.save()
+
+    await staffPerformanceResultSummaryModel.deleteMany({});
 
     res.json({ success: true, assessmentPeriod });
   } catch (error) {

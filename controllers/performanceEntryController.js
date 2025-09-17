@@ -5,6 +5,7 @@ import path from "path";
 import fs from "fs";
 import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
+import assessmentPeriodModel from "../models/assessmentPeriodModel.js";
 
 export const createPerformanceEntry = async (req, res) => {
   try {
@@ -149,9 +150,17 @@ export const getPerformanceEntriesSummary = async (req, res) => {
 
 export const getAllUserPerformanceEntries = async (req, res) => {
   try {
-    const allUserPerformanceEntries = await performanceEntryModel.find().lean();
+    const currAssessmentPeriod = await assessmentPeriodModel.findOne().sort({ createdAt: -1 });
+
+    const allUserPerformanceEntries = await performanceEntryModel.find({
+      date: {
+        $gte: currAssessmentPeriod.startDate,
+        $lte: currAssessmentPeriod.endDate,
+    }}).lean();
 
     const performanceCategories = await performanceCategoryModel.find().lean();
+
+    
 
     let allUsers;
 
