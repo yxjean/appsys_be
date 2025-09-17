@@ -6,6 +6,9 @@ import userModel from "../models/userModel.js";
 import {
   BOOKING_INVITATION_TEMPLATE
 } from "../config/notiEmailTemplate.js";
+import {
+  BOOKING_RESPONSE_TEMPLATE
+} from "../config/respondEmailTemplate.js";
 
 async function createBooking(req, res) {
   try {
@@ -29,8 +32,6 @@ async function createBooking(req, res) {
     
     const user = await userModel.findById(req.body.bookedToId);
 
-
-
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: user.email,
@@ -43,7 +44,6 @@ async function createBooking(req, res) {
     };
 
     await transporter.sendMail(mailOptions);
-
 
     res.json({ success: true, booking });
   } catch (error) {

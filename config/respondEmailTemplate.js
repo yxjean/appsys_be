@@ -67,11 +67,6 @@ export const BOOKING_RESPONSE_TEMPLATE = `
                           <span style="color: #22D172;">{{bookedToName}}</span> has responded to your booking.
                         </td>
                       </tr>
-                      <tr>
-                        <td style="padding: 10px 0; font-size: 14px; line-height: 150%;">
-                          Status: <span class="status">{{status}}</span>
-                        </td>
-                      </tr>
                     </tbody>
                   </table>
                 </td>
