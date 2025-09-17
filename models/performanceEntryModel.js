@@ -15,6 +15,12 @@ const performanceEntrySchema = new mongoose.Schema({
   document: {
     type: String,
   },
+  letterFile: {
+    type: String,
+  },
+  slipFile: {
+    type: String,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

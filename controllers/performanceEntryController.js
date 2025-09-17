@@ -10,6 +10,8 @@ export const createPerformanceEntry = async (req, res) => {
   try {
     const { title, area, details, additionalData } = req.body;
     const document = req.file ? req.file.filename : null;
+    const letterFile = req.files.letterFile ? req.files.letterFile[0].filename : null;
+    const slipFile = req.files.slipFile ? req.files.slipFile[0].filename : null;
     const user = req.user._id;
 
     // Validate required fields
@@ -36,6 +38,8 @@ export const createPerformanceEntry = async (req, res) => {
       details: details || "", // Details can be optional
       additionalData: parsedAdditionalData,
       document,
+      letterFile,
+      slipFile, 
       user,
       date: new Date(),
     });

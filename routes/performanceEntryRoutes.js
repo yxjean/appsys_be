@@ -27,7 +27,10 @@ const upload = multer({ storage });
 router.post(
   "/performance-entries",
   isAuthenticated,
-  upload.single("document"),
+  upload.fields([
+    { name:"letterFile", maxCount: 1},
+    { name:"slipFile", maxCount: 1}
+  ]),
   createPerformanceEntry
 );
 router.get("/performance-entries", isAuthenticated, getPerformanceEntries);
