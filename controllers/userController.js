@@ -47,6 +47,27 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+
+
+export const getUserProfileById = async (req, res) => {
+  try {
+    const user = await userModel
+      .findById(req.params.id)
+      .populate("faculty") // Populate the faculty field
+      .populate("department"); // Optionally populate the department field
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;

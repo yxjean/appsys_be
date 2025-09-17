@@ -26,7 +26,7 @@ export const updateStaffPerformanceSummary = async (req, res) => {
         grade: val.grade
       }
     })
-
+  
     if(staffPerformanceResultSummary.length){
       staffPerformanceResultSummary[0].confirmedAgreement = staffPerformanceResultSummary[0].confirmedAgreement.filter(val => {
         let isExists = false;

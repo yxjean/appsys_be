@@ -8,6 +8,7 @@ import {
   checkAdminExists,
   updateUserPrivileges,
   createUser,
+  getUserProfileById
 } from "../controllers/userController.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 import multer from "multer";
@@ -51,6 +52,7 @@ const profileUpload = multer({
 
 userRouter.get("/data", userAuth, getUserData);
 userRouter.get("/profile", isAuthenticated, getUserProfile);
+userRouter.get("/profile/user/:id",isAuthenticated,getUserProfileById);
 userRouter.put(
   "/profile",
   isAuthenticated,
